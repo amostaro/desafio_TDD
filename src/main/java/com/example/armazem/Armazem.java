@@ -38,4 +38,15 @@ public class Armazem {
         }
     }
 
+    public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
+
+        if (estoqueTreeMap.containsKey(ingrediente) && quantidade > 0) {
+
+            int qtd = estoqueTreeMap.get(ingrediente) + quantidade;
+            estoqueTreeMap.put(ingrediente, qtd);
+        } else {
+            throw new IllegalArgumentException("Ingrediente não encontrado ou quantidade inválida");
+        }
+    }
+
 }

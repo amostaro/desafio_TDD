@@ -1,9 +1,7 @@
 package com.example.TDD;
 
 import com.example.armazem.Armazem;
-import com.example.ingredientes.Base;
-import com.example.ingredientes.Ingrediente;
-import com.example.ingredientes.TipoBase;
+import com.example.ingredientes.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,16 +14,14 @@ class TddApplicationTests {
 
 	TreeMap<Ingrediente, Integer> novoEstoqueTreeMap = new TreeMap<>();
 	Armazem estoqueArmazem = new Armazem(novoEstoqueTreeMap);
-	Base novaBase = new Base(TipoBase.Iorgute);
 
 	@Test
 	void contextLoad() {
-
 	}
 
 	@Test
 	public void testCadastrarIngredienteEmEstoque() throws IllegalArgumentException {
-
+		Base novaBase = new Base(TipoBase.Iorgute);
 		try {
 			// teste ingrediente novo
 			estoqueArmazem.cadastrarIngredienteEmEstoque(novaBase);
@@ -41,6 +37,7 @@ class TddApplicationTests {
 
 	@Test
 	public void testDescadastrarIngredienteEmEstoque() throws IllegalArgumentException {
+		Base novaBase = new Base(TipoBase.Iorgute);
 		try {
 			// teste remove ingrediente
 			estoqueArmazem.cadastrarIngredienteEmEstoque(novaBase);
@@ -54,15 +51,24 @@ class TddApplicationTests {
 			assertEquals("Ingrediente não encontrado", e.getMessage());
 		}
 	}
-//
-//	@Test
-//	public void testAdicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) throws IllegalArgumentException {
-//		try {
-//
-//		} catch (IllegalArgumentException e) {
-//			throw new IllegalArgumentException("Ingrediente não encontrado ou quantidade inválida");
-//		}
-//	}
+
+	@Test
+	public void testAdicionarQuantidadeDoIngredienteEmEstoque() throws IllegalArgumentException {
+		Topping novoTopping = new Topping(TipoTopping.Chocolate);
+		Integer quantidade = 3;
+		Integer novaQtd = 7;
+		try {
+			estoqueArmazem.cadastrarIngredienteEmEstoque(novoTopping);
+			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, quantidade);
+			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade));
+
+			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, novaQtd);
+			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade + novaQtd));
+
+		} catch (IllegalArgumentException e) {
+			assertEquals("Ingrediente não encontrado ou quantidade inválida", e.getMessage());
+		}
+	}
 //
 //	@Test
 //	public void testReduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) throws IllegalArgumentException {
