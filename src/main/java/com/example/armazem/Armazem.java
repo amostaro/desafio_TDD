@@ -31,7 +31,7 @@ public class Armazem {
 
     public void descadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
 
-        if (!estoqueTreeMap.containsKey(ingrediente)) {
+        if (estoqueTreeMap.containsKey(ingrediente)) {
             estoqueTreeMap.remove(ingrediente, 0);
         } else {
             throw new IllegalArgumentException("Ingrediente não encontrado");
@@ -53,6 +53,7 @@ public class Armazem {
 
         if (estoqueTreeMap.containsKey(ingrediente)) {
             if (estoqueTreeMap.get(ingrediente) >= quantidade && quantidade > 0) {
+
                 int qtd = estoqueTreeMap.get(ingrediente) - quantidade;
                 estoqueTreeMap.put(ingrediente, qtd);
             }
@@ -60,6 +61,15 @@ public class Armazem {
         } else {
             throw new IllegalArgumentException("Ingrediente não encontrado ou quantidade inválida");
         }
+    }
+
+    public Integer consultarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente) {
+
+        Integer qtdEmEstoque = 0;
+        if (estoqueTreeMap.containsKey(ingrediente)) {
+            qtdEmEstoque = estoqueTreeMap.get(ingrediente);
+        }
+        return qtdEmEstoque;
     }
 
 }
