@@ -57,6 +57,8 @@ class TddApplicationTests {
 		Topping novoTopping = new Topping(TipoTopping.Chocolate);
 		Integer quantidade = 3;
 		Integer novaQtd = 7;
+		Integer qtdErro = -2;
+		Topping toppingErro = new Topping(TipoTopping.Aveia);
 		try {
 			estoqueArmazem.cadastrarIngredienteEmEstoque(novoTopping);
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, quantidade);
@@ -64,6 +66,8 @@ class TddApplicationTests {
 
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, novaQtd);
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade + novaQtd));
+
+			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(toppingErro, qtdErro);
 
 		} catch (IllegalArgumentException e) {
 			assertEquals("Ingrediente não encontrado ou quantidade inválida", e.getMessage());
