@@ -1,2 +1,6 @@
-public class Ingrediente {
+public interface Ingrediente {
+
+    /** MÉTODOS */
+    Enum obterTipo();
+
 }
