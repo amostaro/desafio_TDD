@@ -1,6 +1,9 @@
 package com.example.TDD;
 
 import com.example.armazem.Armazem;
+import com.example.exceptions.EstoqueQuantidadeException;
+import com.example.exceptions.IngredienteNaoEncontradoException;
+import com.example.exceptions.QuantidadeInvalidaException;
 import com.example.ingredientes.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,10 +72,13 @@ class TddApplicationTests {
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, novaQtd);
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade + novaQtd));
 
-			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(toppingErro, qtdErro);
+			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(toppingErro, novaQtd);
+			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
 
-		} catch (IllegalArgumentException e) {
-			assertEquals("Ingrediente não encontrado ou quantidade inválida", e.getMessage());
+		} catch (IngredienteNaoEncontradoException e) {
+			assertEquals("Ingrediente não encontrado", e.getMessage());
+		} catch (QuantidadeInvalidaException e) {
+			assertEquals("Quantidade inválida", e.getMessage());
 		}
 	}
 
@@ -83,6 +89,7 @@ class TddApplicationTests {
 		Integer qtdReduzir = 7;
 
 		Topping toppingErro = new Topping(TipoTopping.Aveia);
+		Integer qtdErroNegativa = -4;
 		Integer qtdErro = 50;
 
 		try {
@@ -92,9 +99,16 @@ class TddApplicationTests {
 			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdReduzir);
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade - qtdReduzir));
 
-			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(toppingErro, qtdErro);
-		} catch (IllegalArgumentException e) {
-			assertEquals("Ingrediente não encontrado ou quantidade inválida", e.getMessage());
+			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(toppingErro, qtdReduzir);
+			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErroNegativa);
+			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
+
+		} catch (IngredienteNaoEncontradoException e) {
+			assertEquals("Ingrediente não encontrado", e.getMessage());
+		} catch (QuantidadeInvalidaException e) {
+			assertEquals("Quantidade inválida", e.getMessage());
+		} catch (EstoqueQuantidadeException e) {
+			assertEquals("Estoque com quantidade baixa", e.getMessage());
 		}
 	}
 

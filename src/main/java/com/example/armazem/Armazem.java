@@ -1,5 +1,8 @@
 package com.example.armazem;
 
+import com.example.exceptions.EstoqueQuantidadeException;
+import com.example.exceptions.IngredienteNaoEncontradoException;
+import com.example.exceptions.QuantidadeInvalidaException;
 import com.example.ingredientes.Ingrediente;
 
 import java.util.TreeMap;
@@ -40,26 +43,33 @@ public class Armazem {
 
     public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
 
-        if (estoqueTreeMap.containsKey(ingrediente) && quantidade > 0) {
-
-            int qtd = estoqueTreeMap.get(ingrediente) + quantidade;
-            estoqueTreeMap.put(ingrediente, qtd);
+        if (estoqueTreeMap.containsKey(ingrediente)) {
+            if (quantidade > 0) {
+                int qtd = estoqueTreeMap.get(ingrediente) + quantidade;
+                estoqueTreeMap.put(ingrediente, qtd);
+            } else {
+                throw new QuantidadeInvalidaException();
+            }
         } else {
-            throw new IllegalArgumentException("Ingrediente não encontrado ou quantidade inválida");
+            throw new IngredienteNaoEncontradoException();
         }
     }
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
 
         if (estoqueTreeMap.containsKey(ingrediente)) {
-            if (estoqueTreeMap.get(ingrediente) >= quantidade && quantidade > 0) {
-
-                int qtd = estoqueTreeMap.get(ingrediente) - quantidade;
-                estoqueTreeMap.put(ingrediente, qtd);
+            if (quantidade > 0) {
+                if (estoqueTreeMap.get(ingrediente) >= quantidade) {
+                    int qtd = estoqueTreeMap.get(ingrediente) - quantidade;
+                    estoqueTreeMap.put(ingrediente, qtd);
+                } else {
+                    throw new EstoqueQuantidadeException();
+                }
+            } else {
+                throw new QuantidadeInvalidaException();
             }
-
         } else {
-            throw new IllegalArgumentException("Ingrediente não encontrado ou quantidade inválida");
+            throw new IngredienteNaoEncontradoException();
         }
     }
 
