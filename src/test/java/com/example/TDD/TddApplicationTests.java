@@ -73,12 +73,14 @@ class TddApplicationTests {
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade + novaQtd));
 
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(toppingErro, novaQtd);
-			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
 
-		} catch (IngredienteNaoEncontradoException e) {
-			assertEquals("Ingrediente não encontrado", e.getMessage());
-		} catch (QuantidadeInvalidaException e) {
-			assertEquals("Quantidade inválida", e.getMessage());
+		} catch (IngredienteNaoEncontradoException e1) {
+			assertEquals("Ingrediente não encontrado", e1.getMessage());
+			try {
+				estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
+			} catch (QuantidadeInvalidaException e2) {
+				assertEquals("Quantidade inválida", e2.getMessage());
+			}
 		}
 	}
 
@@ -100,15 +102,19 @@ class TddApplicationTests {
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade - qtdReduzir));
 
 			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(toppingErro, qtdReduzir);
-			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErroNegativa);
-			estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
 
-		} catch (IngredienteNaoEncontradoException e) {
-			assertEquals("Ingrediente não encontrado", e.getMessage());
-		} catch (QuantidadeInvalidaException e) {
-			assertEquals("Quantidade inválida", e.getMessage());
-		} catch (EstoqueQuantidadeException e) {
-			assertEquals("Estoque com quantidade baixa", e.getMessage());
+		} catch (IngredienteNaoEncontradoException e1) {
+			assertEquals("Ingrediente não encontrado", e1.getMessage());
+			try {
+				estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErroNegativa);
+			} catch (QuantidadeInvalidaException e2) {
+				assertEquals("Quantidade inválida", e2.getMessage());
+				try {
+					estoqueArmazem.reduzirQuantidadeDoIngredienteEmEstoque(novoTopping, qtdErro);
+				} catch (EstoqueQuantidadeException e3) {
+					assertEquals("Estoque com quantidade baixa", e3.getMessage());
+				}
+			}
 		}
 	}
 
