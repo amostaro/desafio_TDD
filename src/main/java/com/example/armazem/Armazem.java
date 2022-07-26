@@ -23,9 +23,13 @@ public class Armazem {
         this.estoqueTreeMap = estoqueTreeMap;
     }
 
+    private boolean isContainsKey(Ingrediente ingrediente) {
+        return estoqueTreeMap.containsKey(ingrediente);
+    }
+
     public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
 
-        if (!estoqueTreeMap.containsKey(ingrediente)) {
+        if (!isContainsKey(ingrediente)) {
             estoqueTreeMap.put(ingrediente, 0);
         } else {
             throw new IllegalArgumentException("Ingrediente já cadastrado");
@@ -34,7 +38,7 @@ public class Armazem {
 
     public void descadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
 
-        if (estoqueTreeMap.containsKey(ingrediente)) {
+        if (isContainsKey(ingrediente)) {
             estoqueTreeMap.remove(ingrediente, 0);
         } else {
             throw new IllegalArgumentException("Ingrediente não encontrado");
@@ -43,7 +47,7 @@ public class Armazem {
 
     public void adicionarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
 
-        if (estoqueTreeMap.containsKey(ingrediente)) {
+        if (isContainsKey(ingrediente)) {
             if (quantidade > 0) {
                 int qtd = estoqueTreeMap.get(ingrediente) + quantidade;
                 estoqueTreeMap.put(ingrediente, qtd);
@@ -57,7 +61,7 @@ public class Armazem {
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
 
-        if (estoqueTreeMap.containsKey(ingrediente)) {
+        if (isContainsKey(ingrediente)) {
             if (quantidade > 0) {
                 if (estoqueTreeMap.get(ingrediente) >= quantidade) {
                     int qtd = estoqueTreeMap.get(ingrediente) - quantidade;
@@ -76,7 +80,7 @@ public class Armazem {
     public Integer consultarQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente) {
 
         Integer qtdEmEstoque = 0;
-        if (estoqueTreeMap.containsKey(ingrediente)) {
+        if (isContainsKey(ingrediente)) {
             qtdEmEstoque = estoqueTreeMap.get(ingrediente);
         }
         return qtdEmEstoque;
