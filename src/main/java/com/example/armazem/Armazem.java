@@ -27,6 +27,10 @@ public class Armazem {
         return estoqueTreeMap.containsKey(ingrediente);
     }
 
+    private Integer getQtdEmEstoque(Ingrediente ingrediente) {
+        return estoqueTreeMap.get(ingrediente);
+    }
+
     public void cadastrarIngredienteEmEstoque(Ingrediente ingrediente) {
 
         if (!isContainsKey(ingrediente)) {
@@ -49,8 +53,8 @@ public class Armazem {
 
         if (isContainsKey(ingrediente)) {
             if (quantidade > 0) {
-                int qtd = estoqueTreeMap.get(ingrediente) + quantidade;
-                estoqueTreeMap.put(ingrediente, qtd);
+                int qtdEmEstoque = getQtdEmEstoque(ingrediente) + quantidade;
+                estoqueTreeMap.put(ingrediente, qtdEmEstoque);
             } else {
                 throw new QuantidadeInvalidaException();
             }
@@ -63,9 +67,9 @@ public class Armazem {
 
         if (isContainsKey(ingrediente)) {
             if (quantidade > 0) {
-                if (estoqueTreeMap.get(ingrediente) >= quantidade) {
-                    int qtd = estoqueTreeMap.get(ingrediente) - quantidade;
-                    estoqueTreeMap.put(ingrediente, qtd);
+                if (getQtdEmEstoque(ingrediente) >= quantidade) {
+                    int qtdEmEstoque = getQtdEmEstoque(ingrediente) - quantidade;
+                    estoqueTreeMap.put(ingrediente, qtdEmEstoque);
                 } else {
                     throw new EstoqueQuantidadeException();
                 }
@@ -81,7 +85,7 @@ public class Armazem {
 
         Integer qtdEmEstoque = 0;
         if (isContainsKey(ingrediente)) {
-            qtdEmEstoque = estoqueTreeMap.get(ingrediente);
+            qtdEmEstoque = getQtdEmEstoque(ingrediente);
         }
         return qtdEmEstoque;
     }
