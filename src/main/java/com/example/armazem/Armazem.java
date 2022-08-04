@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class Armazem {
 
-    private TreeMap<Ingrediente, Integer> estoqueTreeMap = new TreeMap<>();
+    private final TreeMap<Ingrediente, Integer> estoqueTreeMap;
 
     public Armazem(TreeMap<Ingrediente, Integer> estoqueTreeMap) {
         this.estoqueTreeMap = estoqueTreeMap;
@@ -19,9 +19,9 @@ public class Armazem {
         return estoqueTreeMap;
     }
 
-    public void setEstoqueTreeMap(TreeMap<Ingrediente, Integer> estoqueTreeMap) {
-        this.estoqueTreeMap = estoqueTreeMap;
-    }
+//    public void setEstoqueTreeMap(TreeMap<Ingrediente, Integer> estoqueTreeMap) {
+//        this.estoqueTreeMap = estoqueTreeMap;
+//    }
 
     private boolean isContainsKey(Ingrediente ingrediente) {
         return estoqueTreeMap.containsKey(ingrediente);
@@ -65,6 +65,8 @@ public class Armazem {
 
     public void reduzirQuantidadeDoIngredienteEmEstoque(Ingrediente ingrediente, Integer quantidade) {
 
+        //TODO - verificar as exceções antes de entrar no mérito da verificação
+        //TODO - separar método verificarQuantidadeInvalida()
         if (isContainsKey(ingrediente)) {
             if (quantidade > 0) {
                 if (getQtdEmEstoque(ingrediente) >= quantidade) {

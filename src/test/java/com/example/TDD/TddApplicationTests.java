@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class TddApplicationTests {
@@ -22,20 +23,30 @@ class TddApplicationTests {
 	void contextLoad() {
 	}
 
+	//TODO - setup() para iniciar variáveis, objetos, com @BeforeEach
+	//TODO - separar testes BONS dos RUINS
+	//TODO - NOMENCLATURAS - nomeDoMetodoTestado_WhenCondicacaoTestada_ShouldComportamentoEsperado
+
 	@Test
 	public void testCadastrarIngredienteEmEstoque() throws IllegalArgumentException {
 		Base novaBase = new Base(TipoBase.Iorgute);
-		try {
-			// teste ingrediente novo
-			estoqueArmazem.cadastrarIngredienteEmEstoque(novaBase);
-			assertEquals(1, estoqueArmazem.getEstoqueTreeMap().size());
 
-			// teste ingrediente repetido ERRO
-			estoqueArmazem.cadastrarIngredienteEmEstoque(novaBase);
+		estoqueArmazem.cadastrarIngredienteEmEstoque(novaBase);
+		assertEquals(1, estoqueArmazem.getEstoqueTreeMap().size());
+		//TODO - verificar a regra da quantidade setada com 0
 
-		} catch (IllegalArgumentException e) {
-			assertEquals("Ingrediente já cadastrado", e.getMessage());
-		}
+	}
+
+	@Test
+	public void testCadastrarIngredienteEmEstoqueErro() throws IllegalArgumentException {
+
+		Throwable erro = assertThrows(IllegalArgumentException.class, () -> {
+			Fruta fruta = new Fruta(TipoFruta.Abacate);
+			estoqueArmazem.cadastrarIngredienteEmEstoque(fruta);
+			estoqueArmazem.cadastrarIngredienteEmEstoque(fruta);
+		});
+
+		assertEquals(erro.getMessage(), "Ingrediente já cadastrado");
 	}
 
 	@Test
@@ -68,6 +79,8 @@ class TddApplicationTests {
 			estoqueArmazem.cadastrarIngredienteEmEstoque(novoTopping);
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, quantidade);
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade));
+			//TODO - assertTrue or assertFalse
+			//TODO - comparar a quantidade do item inserido
 
 			estoqueArmazem.adicionarQuantidadeDoIngredienteEmEstoque(novoTopping, novaQtd);
 			assertEquals(true, estoqueArmazem.getEstoqueTreeMap().containsValue(quantidade + novaQtd));
